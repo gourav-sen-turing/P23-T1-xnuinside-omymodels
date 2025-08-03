@@ -98,7 +98,7 @@ class ModelGenerator:
             model += column
         for column in columns["default"]:
             model += column
-        return ""
+        return model
 
     def create_header(self, *args, **kwargs) -> str:
         header = ""

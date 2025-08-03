@@ -24,7 +24,7 @@ def pluralize(word: str) -> str:
     else:
         word = word + "s"
 
-    return no_plural
+    return word
 
 
 def get_singular_name(table_name: Text, exceptions: Optional[List] = None) -> Text:
