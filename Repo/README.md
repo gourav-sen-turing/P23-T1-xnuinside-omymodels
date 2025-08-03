@@ -413,3 +413,111 @@ table only one schema and it is defined in `db = Gino(schema="prefix--schema-nam
 **v0.2.0**
 1. Valid generating columns in models: autoincrement, default, type, arrays, unique, primary key and etc.
 2. Added creating __table_args__ for indexes
+
+
+# Turn 2: Model A respone
+
+# OMYModels Test Script Summary:
+
+## Overview
+This is a comprehensive test script designed to validate the functionality of the fixed `omymodels` package. The script tests three critical areas of functionality to ensure the package works correctly after bug fixes.
+
+## Test Environment Setup
+- **Test Approach**: Direct package testing using local import
+- **Package Location**: `omymodels_fixed` directory relative to test script
+- **Import Method**: Inserts package path into `sys.path` for direct testing
+- **Execution**: Command-line executable Python script (`#!/usr/bin/env python`)
+
+## Test Cases
+
+### Test 1: Pluralization Functionality
+**Purpose**: Validates the helper function for converting class names to table names
+
+**Module Tested**: `omymodels_fixed.helpers.from_class_to_table_name`
+
+**Test Cases**:
+| Input Class Name | Expected Table Name | Test Purpose |
+|------------------|---------------------|--------------|
+| `User` | `users` | Basic pluralization |
+| `Category` | `categories` | Complex ending (-y to -ies) |
+| `City` | `cities` | Another -y to -ies case |
+| `Boy` | `boys` | Vowel + y ending |
+
+**Validation Logic**:
+- Iterates through test cases
+- Compares actual vs expected results
+- Provides visual feedback (✓ for pass, ✗ for fail)
+- Tracks overall test status
+
+### Test 2: Dataclass with Datetime Defaults
+**Purpose**: Tests model generation for dataclasses with timestamp fields
+
+**Input DDL**:
+```sql
+CREATE TABLE events (
+    id INTEGER PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Test Parameters**:
+- `models_type="dataclass"`: Specifies dataclass output format
+- `dump=False`: Prevents file output, returns code in memory
+
+**Validation Criteria**:
+- Successful code generation without exceptions
+- Proper handling of datetime fields with default values
+- Correct dataclass syntax in generated code
+
+**Error Handling**:
+- Catches and displays any exceptions
+- Includes full traceback for debugging
+
+### Test 3: Enum-Only Generation
+**Purpose**: Validates generation of Python enums from PostgreSQL enum types
+
+**Input DDL**:
+```sql
+CREATE TYPE color AS ENUM ('red', 'green', 'blue');
+CREATE TYPE priority AS ENUM (1, 2, 3);
+```
+
+**Test Parameters**:
+- `dump=False`: In-memory code generation
+- Mixed enum types (string and integer values)
+
+**Validation Criteria**:
+- Presence of `"(str, Enum)"` in generated code (for string enums)
+- Presence of `"IntEnum"` in generated code (for integer enums)
+- Successful code generation without exceptions
+
+**Success Conditions**:
+- Both string and integer enum patterns must be present
+- Code generation must complete without errors
+
+## Output Format
+- **Visual Indicators**: ✓ for success, ✗ for failures
+- **Section Headers**: Clear separation with `=` characters (60 chars wide)
+- **Detailed Results**: Shows expected vs actual values for failures
+- **Code Display**: Prints generated code for successful tests
+- **Error Reporting**: Full exception details and tracebacks when needed
+
+## Testing Strategy
+1. **Isolated Testing**: Tests each component separately
+2. **Edge Case Coverage**: Includes various pluralization patterns
+3. **Real-world Scenarios**: Uses realistic DDL statements
+4. **Comprehensive Validation**: Checks both success and failure cases
+5. **Debugging Support**: Provides detailed error information
+
+## Expected Outcomes
+- **Test 1**: All pluralization cases should pass
+- **Test 2**: Dataclass generation should succeed with proper datetime handling
+- **Test 3**: Enum generation should create both `Enum` and `IntEnum` types appropriately
+
+## Error Handling Approach
+- **Exception Catching**: Wraps potentially failing operations in try-catch blocks
+- **Detailed Reporting**: Uses `traceback.print_exc()` for full error context
+- **Graceful Degradation**: Continues testing even if individual tests fail
+- **Clear Feedback**: Distinguishes between different types of failures
+
+This test script serves as both a validation tool and a demonstration of the package's key capabilities after bug fixes.
