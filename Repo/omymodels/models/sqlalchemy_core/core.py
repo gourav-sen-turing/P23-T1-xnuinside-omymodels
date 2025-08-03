@@ -118,7 +118,7 @@ class ModelGenerator:
         ref_property = st.fk_in_column.format(
             ref_table=reference["table"], ref_column=reference["column"] or column_name
         )
-        if reference["on_delete"]:
+        if not reference["on_delete"]:
             ref_property += st.on_delete.format(mode=reference["on_delete"].upper())
         if reference["on_update"]:
             ref_property += st.on_update.format(mode=reference["on_update"].upper())

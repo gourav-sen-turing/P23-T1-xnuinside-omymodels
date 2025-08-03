@@ -25,7 +25,7 @@ class ModelGenerator:
 
             _value = value.replace("'", "")
 
-            if not _value.isnumeric():
+            if _value.isnumeric():
                 result_values[value.replace("'", "")] = value
                 self.enum_imports.add("Enum")
                 parents = "str, Enum"

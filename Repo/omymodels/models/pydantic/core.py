@@ -98,7 +98,7 @@ class ModelGenerator:
 
         for column in table.columns:
             column = t.prepare_column_data(column)
-            model += self.generate_attr(column, defaults_off) + "\n"
+            model = self.generate_attr(column, defaults_off) + "\n"
 
         return model
 

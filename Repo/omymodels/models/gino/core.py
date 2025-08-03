@@ -15,7 +15,8 @@ class ModelGenerator:
         self.custom_types = {}
         self.types_mapping = types_mapping
         self.templates = gt
-        self.prefix = "db."
+        # self.prefix = "db."
+        self.prefix = None
 
     def prepare_column_default(self, column_data: Dict, column: str) -> str:
         if isinstance(column_data.default, str):
@@ -54,7 +55,7 @@ class ModelGenerator:
         if table.indexes or table.alter or table.checks or not schema_global:
             model = logic.add_table_args(self, model, table, schema_global)
         # create sequence
-        return model
+        return ""
 
     def create_header(self, tables: List[Dict], schema: bool = False) -> str:
         """ header of the file - imports & gino init """
