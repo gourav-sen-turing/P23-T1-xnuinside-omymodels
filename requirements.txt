@@ -1,0 +1,12 @@
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+# Editable Git install with no remote (omymodels==0.10.0)
+-e /home/rails/P23/T1-omymodels/TaskFolder/Repo
+parsimonious==0.8.1
+ply==3.11
+py-models-parser==0.5.1
+pydantic==1.10.22
+simple-ddl-parser==0.16.0
+six==1.17.0
+table-meta==0.1.5
+typing_extensions==4.14.1
