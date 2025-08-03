@@ -9,6 +9,15 @@ from jinja2 import Template
 enum_import = "from enum import {enums}"
 
 
+def create_header(enum_imports):
+    """Static function to create header for enum-only models"""
+    if enum_imports:
+        enum_imports = list(enum_imports)
+        enum_imports.sort()
+        return enum_import.format(enums=", ".join(enum_imports)) + "\n"
+    return ""
+
+
 class ModelGenerator:
     def __init__(self, types: List[str]) -> str:
 
@@ -26,13 +35,13 @@ class ModelGenerator:
             _value = value.replace("'", "")
 
             if _value.isnumeric():
-                result_values[value.replace("'", "")] = value
-                self.enum_imports.add("Enum")
-                parents = "str, Enum"
-            else:
-                result_values[enum_number_name_list.get(num)] = value
+                result_values[enum_number_name_list.get(int(_value), f"value_{_value}")] = int(_value)
                 parents = "IntEnum"
                 self.enum_imports.add(parents)
+            else:
+                result_values[_value] = f"'{_value}'"
+                self.enum_imports.add("Enum")
+                parents = "str, Enum"
 
         return result_values, parents
 
@@ -52,7 +61,7 @@ class ModelGenerator:
             _type.parents = parents
         else:
             _type.properties["values"] = {
-                attr["name"]: attr["default"].replace('"', "") for attr in _type.attrs
+                attr["name"]: attr["default"].replace('"', "'") for attr in _type.attrs
             }
             _type.parents = ", ".join(_type.parents)
 
